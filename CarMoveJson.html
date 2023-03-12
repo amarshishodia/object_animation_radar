@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Move Object</title>
+	
+	<style>
+		img {
+			position: absolute;
+			width: 50px;
+			height: 50px;
+		}
+	
+	</style>
+</head>
+<body>
+	<img id="object" src="https://img.icons8.com/fluency/48/null/car.png" alt="car icon">
+	<script>
+		// Get a reference to the object element
+		const object = document.getElementById('object');
+
+		// Define the JSON data
+		const data = [
+			{'TarDisLong': 25, 'TarDisLat': 9, 'Time': '2023-02-15 13:51:13.317390'},
+			{'TarDisLong': 25, 'TarDisLat': 10, 'Time': '2023-02-15 13:51:13.381387'},
+			{'TarDisLong': 26, 'TarDisLat': 10, 'Time': '2023-02-15 13:51:13.450246'},
+			{'TarDisLong': 26, 'TarDisLat': 11, 'Time': '2023-02-15 13:51:13.503524'},
+			{'TarDisLong': 27, 'TarDisLat': 11, 'Time': '2023-02-15 13:51:13.573584'},
+			{'TarDisLong': 28, 'TarDisLat': 11, 'Time': '2023-02-15 13:51:13.626003'},
+			{'TarDisLong': 28, 'TarDisLat': 12, 'Time': '2023-02-15 13:51:13.647670'},
+			{'TarDisLong': 29, 'TarDisLat': 12, 'Time': '2023-02-15 13:51:13.669229'}, 
+			{'TarDisLong': 29, 'TarDisLat': 13, 'Time': '2023-02-15 13:51:13.691750'}, 
+			{'TarDisLong': 30, 'TarDisLat': 13, 'Time': '2023-02-15 13:51:13.734291'}, 
+			{'TarDisLong': 30, 'TarDisLat': 14, 'Time': '2023-02-15 13:51:13.786332'}, 
+			{'TarDisLong': 31, 'TarDisLat': 14, 'Time': '2023-02-15 13:51:13.804320'}, 
+			{'TarDisLong': 32, 'TarDisLat': 15, 'Time': '2023-02-15 13:51:13.842523'}, 
+			{'TarDisLong': 32, 'TarDisLat': 15, 'Time': '2023-02-15 13:51:13.864388'}
+		];
+
+		// Define the current index in the data array
+		let index = 0;
+
+		// Define the update function
+		function update() {
+			// Get the current data point
+			const currentData = data[index];
+
+			// Update the position of the object element
+			object.style.left = `${currentData.TarDisLong}px`;
+			object.style.top = `${currentData.TarDisLat}px`;
+
+      // Increment the index
+index++;
+
+// If we've reached the end of the data array, reset the index to 0
+if (index >= data.length) {
+index = 0;
+}
+
+// Get the next data point
+const nextData = data[index];
+
+// Calculate the time difference between the current and next data points in milliseconds
+const currentTime = new Date(currentData.Time).getTime();
+const nextTime = new Date(nextData.Time).getTime();
+const timeDiff = nextTime - currentTime;
+
+// Schedule the next update using the time difference
+setTimeout(update, timeDiff);
+
+}
+
+// Start the update loop
+update();
+</script>
+</body>
+</html>
+
+
+
+

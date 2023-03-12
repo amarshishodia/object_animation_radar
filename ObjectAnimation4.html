@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Move Object</title>
+    <style>
+        #object {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="object"></div>
+    <script>
+
+
+        // Get a reference to the object element
+        const object = document.getElementById('object');
+
+        // Define the JSONP callback function
+        
+        function handleData(data) {
+            // Define the current index in the data array
+            let index = 0;
+
+            // Define the update function
+            function update() {
+                // Get the current data point
+                const currentData = data[index];
+
+                // Update the position of the object element
+                object.style.left = `${currentData.TarDisLong}px`;
+                object.style.top = `${currentData.TarDisLat}px`;
+
+                // Increment the index
+                index++;
+
+                // If we've reached the end of the data array, reset the index to 0
+                if (index >= data.length) {
+                    index = 0;
+                }
+
+                // Get the next data point
+                const nextData = data[index];
+
+                // Calculate the time difference between the current and next data points in milliseconds
+                const currentTime = new Date(currentData.Time).getTime();
+                const nextTime = new Date(nextData.Time).getTime();
+                const timeDiff = nextTime - currentTime;
+
+                // Schedule the next update using the time difference
+                setTimeout(update, timeDiff);
+            }
+
+            // Start the update loop
+            update();
+        }
+
+        // Define the JSONP request function
+        function requestJSONP(url, callback) {
+            // Create a script element
+            const script = document.createElement('script');
+            script.src = url;
+
+            // Define the JSONP callback function
+            window.jsonpCallback = function(data) {
+                callback(data);
+                delete window.jsonpCallback;
+                document.body.removeChild(script);
+            }
+
+            // Append the script element to the document body
+            document.body.appendChild(script);
+        }
+
+        // Request the data from the data.json file using JSONP
+        requestJSONP('data.json?callback=jsonpCallback', handleData);
+// **JSON data should be in correct format
+
+    </script>
+</body>
+</html>

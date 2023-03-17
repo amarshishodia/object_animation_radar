@@ -5,7 +5,9 @@ const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = "/.netlify/functions/netlifyAPI" || 5000;
+const serverless = require('serverless-http');
+
 
 // Enable cross-origin resource sharing for all requests
 app.use(cors());
@@ -88,7 +90,9 @@ app.delete('/api/settings/:id', (req, res) => {
     });
 });
 
-app.use('/.netlify/functions/index', router);
+app.use(port, ()=>{
+  console.log('API server started on ${port}');
+});
 module.exports.handler = serverless(app);
 
 // Start the server
